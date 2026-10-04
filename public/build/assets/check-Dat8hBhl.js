@@ -1,0 +1,1 @@
+import{t as e}from"./createLucideIcon-EOP_BO6a.js";var t=e(`Check`,[[`path`,{d:`M20 6 9 17l-5-5`,key:`1gmf2c`}]]);export{t};

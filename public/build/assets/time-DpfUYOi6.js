@@ -1,0 +1,1 @@
+function e(e,t){if(!e)return`—`;let[n,r=``]=e.split(` `),i=r.slice(0,5);if(t&&n!==t){let[,e,t]=n.split(`-`);return`${i} (${t}/${e})`}return i}export{e as t};
