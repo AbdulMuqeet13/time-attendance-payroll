@@ -161,6 +161,14 @@ test('someone still at work is present, not a half day', function () {
         ->worked_minutes->toBe(55);
 });
 
+test('a scan later than now (device clock ahead) counts no worked time instead of negative time', function () {
+    $employee = Employee::factory()->create(['joining_date' => '2026-01-01']);
+    $this->travelTo(CarbonImmutable::parse('2026-10-05 08:00'));
+    scan($employee, '2026-10-05 09:30');
+
+    expect(rebuildDay($employee, '2026-10-05')['none']->worked_minutes)->toBe(0);
+});
+
 test('leaving after less than the half-day minimum is a half day', function () {
     $employee = employeeWithShifts(Shift::factory()->between('09:00', '17:00', 'Day')->create());
     scan($employee, '2026-10-05 09:00', '2026-10-05 12:00');

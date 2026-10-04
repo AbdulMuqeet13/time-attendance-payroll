@@ -240,7 +240,8 @@ class AttendanceProcessor
 
         foreach ($entries as $entry) {
             $out = $entry->checkOut() ?? ($date->isToday() ? $now : null);
-            $worked += $out ? (int) $entry->checkIn()->diffInMinutes($out) : 0;
+            // A check-in later than now (device clock ahead) has worked nothing yet, never negative time.
+            $worked += $out ? max(0, (int) $entry->checkIn()->diffInMinutes($out)) : 0;
         }
 
         [$dayType, $status] = match (true) {
@@ -318,7 +319,7 @@ class AttendanceProcessor
             'check_out' => $entry->checkOut(),
             'in_punch_id' => $entry->in->id,
             'out_punch_id' => $entry->out?->id,
-            'minutes' => $entry->checkOut() ? (int) $entry->checkIn()->diffInMinutes($entry->checkOut()) : 0,
+            'minutes' => $entry->checkOut() ? max(0, (int) $entry->checkIn()->diffInMinutes($entry->checkOut())) : 0,
         ], $entries);
     }
 

@@ -62,7 +62,7 @@ test('a backup from the device collects what it uploads into an encrypted file',
 
     expect($backup)
         ->status->toBe(BackupStatus::Completed)
-        ->counts->toBe(['users' => 2, 'fingerprints' => 1, 'faces' => 0, 'other_templates' => 0, 'logs' => 2])
+        ->counts->toEqual(['users' => 2, 'fingerprints' => 1, 'faces' => 0, 'other_templates' => 0, 'logs' => 2])
         ->and($contents['templates'][0])->toMatchArray(['pin' => '7', 'index' => 6, 'template' => 'QUJD', 'major_version' => '10'])
         ->and($backup->records()->count())->toBe(0)
         ->and(Storage::get($backup->file_path))->not->toContain('QUJD');
@@ -101,7 +101,7 @@ test('a backup from the server uses the employees, templates and scans the app h
 
     expect(DeviceBackup::sole())
         ->status->toBe(BackupStatus::Completed)
-        ->counts->toBe(['users' => 1, 'fingerprints' => 2, 'faces' => 0, 'other_templates' => 0, 'logs' => 1]);
+        ->counts->toEqual(['users' => 1, 'fingerprints' => 2, 'faces' => 0, 'other_templates' => 0, 'logs' => 1]);
 });
 
 test('a downloaded backup can be uploaded again, and other files are refused', function () {

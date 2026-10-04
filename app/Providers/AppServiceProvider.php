@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 
@@ -43,6 +44,9 @@ class AppServiceProvider extends ServiceProvider
     protected function configureDefaults(): void
     {
         Date::use(CarbonImmutable::class);
+
+        // Indexed utf8mb4 strings must fit older MySQL/MariaDB key limits (191 × 4 bytes = 764 < 767).
+        Schema::defaultStringLength(191);
 
         DB::prohibitDestructiveCommands(
             app()->isProduction(),
